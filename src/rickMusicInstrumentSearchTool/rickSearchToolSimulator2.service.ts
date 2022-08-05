@@ -1,4 +1,5 @@
 import { Injectable } from "@nestjs/common";
+import getAllPropertiesForInstrumentType, { Builder, InstrumentType, PropertyAttributes } from "./instrumentProperties";
 
 @Injectable()
 export class RickSearchToolSimulatorServiceNew{
@@ -6,10 +7,46 @@ export class RickSearchToolSimulatorServiceNew{
         //open an inventory
         const inventory = new Inventory();
         const guitars : Instrument[] = [];
-        const guitar_spec1 = new InstrumentSpecifications(InstrumentType.Guitar,"winterRose", Builder.Gibson,Type.Acoustic, Wood.Mahogony, Wood.Saal,6, null);
-        const guitar_spec2 = new InstrumentSpecifications(InstrumentType.Guitar,"texasSweetness", Builder.Gibson,Type.Acoustic, Wood.Mahogony, Wood.Teak,6,null);
-        const guitar_spec3 = new InstrumentSpecifications(InstrumentType.Guitar,"britishSuburbs", Builder.Hendrix,Type.Electric, Wood.Saal, Wood.Mahogony,6,null);
-
+        
+        const guitar_spec1 = new InstrumentSpecifications(InstrumentType.Guitar);
+        //InstrumentType.Guitar,"winterRose", Builder.Gibson,Type.Acoustic, Wood.Mahogony, Wood.Saal,6, null
+        const guitar_spec2 = new InstrumentSpecifications(InstrumentType.Guitar);
+        // InstrumentType.Guitar,"texasSweetness", Builder.Gibson,Type.Acoustic, Wood.Mahogony, Wood.Teak,6,null
+        const guitar_spec3 = new InstrumentSpecifications(InstrumentType.Guitar);
+        //"britishSuburbs", Builder.Hendrix,Type.Electric, Wood.Saal, Wood.Mahogony,6,null
+        const propertiesForGuitar = getAllPropertiesForInstrumentType(InstrumentType.Guitar);
+        for(let [key,value] of propertiesForGuitar){
+            // const values = value as PropertyAttributes;
+            switch (key) {
+                case "model":
+                    guitar_spec1.properties.set(key,"winterRose");
+                    guitar_spec2.properties.set(key,"texasSweetness");
+                    guitar_spec3.properties.set(key,"britishSuburbs");
+                    break;
+                case "builder":
+                    guitar_spec1.properties.set(key,value.possibleValues[0]);
+                    guitar_spec2.properties.set(key,value.possibleValues[1]);
+                    guitar_spec1.properties.set(key,value.possibleValues[2]);
+                case "type":
+                    guitar_spec1.properties.set(key,value.possibleValues[0]);
+                    guitar_spec2.properties.set(key,value.possibleValues[0]);
+                    guitar_spec1.properties.set(key,value.possibleValues[1]);
+                case "topWood":
+                    guitar_spec1.properties.set(key,value.possibleValues[0]);
+                    guitar_spec2.properties.set(key,value.possibleValues[0]);
+                    guitar_spec1.properties.set(key,value.possibleValues[1]);
+                case "backWood":
+                    guitar_spec1.properties.set(key,value.possibleValues[1]);
+                    guitar_spec2.properties.set(key,value.possibleValues[2]);
+                    guitar_spec1.properties.set(key,value.possibleValues[0]);
+                case "numStrings":
+                    guitar_spec1.properties.set(key,value.possibleValues[0]);
+                    guitar_spec2.properties.set(key,value.possibleValues[0]);
+                    guitar_spec1.properties.set(key,value.possibleValues[0]);
+                default:
+                    break;
+            }
+        }
 
         guitars.push(new Instrument("36d_gt",15000,guitar_spec2));
         guitars.push(new Instrument("1a_gt",10000,guitar_spec1));
@@ -79,35 +116,57 @@ class Instrument{
         this._price = newPrice;
     }
 }
+
+export type PropertyType = string | Number;
+
 class InstrumentSpecifications{
-    private propertiesForInstrumentTypes : Map<InstrumentType, string[]> = 
-    new Map<InstrumentType,string[]>();
+    // private propertiesForInstrumentTypes : Map<InstrumentType, string[]> = 
+    // new Map<InstrumentType,string[]>();
+    private _properties : Map<string, PropertyType>;
     
     constructor(
         public readonly instrumentType: InstrumentType,
-        public readonly model : string | null,
-        public readonly builder: Builder | null,
-        public readonly type: Type | null,
-        public readonly topWood : Wood | null,
-        public readonly backWood : Wood | null,
-        public readonly numStrings: Number | null,
-        public readonly style: Style | null,
+        // public readonly model : string | null,
+        // public readonly builder: Builder | null,
+        // public readonly type: Type | null,
+        // public readonly topWood : Wood | null,
+        // public readonly backWood : Wood | null,
+        // public readonly numStrings: Number | null,
+        // public readonly style: Style | null,
+        properties?: Map<string, PropertyType> | null
         
     ){
-        this.propertiesForInstrumentTypes.set(InstrumentType.Guitar,["model","builder","type","topWood","backWood","numStrings"]);
-        this.propertiesForInstrumentTypes.set(InstrumentType.Mandolin,["model","builder","type","topWood","backWood","style"]);
-        this.propertiesForInstrumentTypes.set(InstrumentType.Bonjo,["model","builder","type","style","numStrings"]);
+        this._properties = properties === null  ? new Map<string,PropertyType> : properties;
+        // this.propertiesForInstrumentTypes.set(InstrumentType.Guitar,["model","builder","type","topWood","backWood","numStrings"]);
+        // this.propertiesForInstrumentTypes.set(InstrumentType.Mandolin,["model","builder","type","topWood","backWood","style"]);
+        // this.propertiesForInstrumentTypes.set(InstrumentType.Bonjo,["model","builder","type","style","numStrings"]);
     }
-    private getProperitesMappedToInstrumentType(instrumentType: InstrumentType): string[]{
-        return this.propertiesForInstrumentTypes.get(instrumentType);
+    public get properties(): Map<string, PropertyType>{
+        return this._properties;
     }
+    public getValueForProperty(propertyName: string) : PropertyType {
+        const value = this._properties.get(propertyName);
+        return value;
+    }
+    // private getProperitesMappedToInstrumentType(instrumentType: InstrumentType): string[]{
+    //     return this.propertiesForInstrumentTypes.get(instrumentType);
+    // }
+    // matches(otherInstrumentSpecs: InstrumentSpecifications): boolean {
+    //     if(this.instrumentType !== otherInstrumentSpecs.instrumentType){
+    //         return false;
+    //     }
+    //     const propsToCompare = this.getProperitesMappedToInstrumentType(this.instrumentType);
+    //     for(let prop of propsToCompare){
+    //         if(this[prop] !== otherInstrumentSpecs[prop]){
+    //             return false;
+    //         }
+    //     }
+    //     return true;
+    // }
     matches(otherInstrumentSpecs: InstrumentSpecifications): boolean {
-        if(this.instrumentType !== otherInstrumentSpecs.instrumentType){
-            return false;
-        }
-        const propsToCompare = this.getProperitesMappedToInstrumentType(this.instrumentType);
-        for(let prop of propsToCompare){
-            if(this[prop] !== otherInstrumentSpecs[prop]){
+        const otherProperties = otherInstrumentSpecs.properties;
+        for(let [key,value] of otherProperties){
+            if(this.getValueForProperty(key) !== value){
                 return false;
             }
         }
@@ -115,30 +174,5 @@ class InstrumentSpecifications{
     }
 
 }
-enum InstrumentType{
-    Guitar,
-    Mandolin,
-    Bonjo
-}
-enum Builder{
-    Gibson,
-    Jetson,
-    Hendrix
-}
 
-enum Type{
-    Acoustic,
-    Electric
-}
 
-enum Wood{
-    Mahogony,
-    Saal,
-    Teak
-}
-enum Style{
-A,
-F,
-Resonator,
-OpenBack
-}
