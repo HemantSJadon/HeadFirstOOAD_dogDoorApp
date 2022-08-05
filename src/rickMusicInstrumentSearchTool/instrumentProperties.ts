@@ -1,3 +1,5 @@
+import { type } from "os";
+
 export default
     function getAllPropertiesForInstrumentType(instrumentType: InstrumentType): Map<string,PropertyAttributes> {
     const properties = [
@@ -10,37 +12,37 @@ export default
         {
             key: "builder",
             type: "enum",
-            possibleValues: [Builder[Builder.Gibson], Builder[Builder.Jetson], Builder[Builder.Hendrix]],
+            possibleValues: getAllPossibleValuesOfAnEnumType(Builder),
             instrumentTypes: [InstrumentType.Guitar, InstrumentType.Mandolin, InstrumentType.Bonjo]
         },
         {
             key: "type",
             type: "enum",
-            possibleValues: [Type[Type.Acoustic], Type[Type.Electric]],
+            possibleValues: getAllPossibleValuesOfAnEnumType(Type),
             instrumentTypes: [InstrumentType.Guitar, InstrumentType.Mandolin, InstrumentType.Bonjo]
         },
         {
             key: "topWood",
             type: "enum",
-            possibleValues: [Wood[Wood.Mahogony],Wood[Wood.Saal],Wood[Wood.Teak]],
+            possibleValues: getAllPossibleValuesOfAnEnumType(Wood),
             instrumentTypes: [InstrumentType.Guitar, InstrumentType.Mandolin]
         },
         {
             key: "backWood",
             type: "enum",
-            possibleValues: [Wood[Wood.Mahogony],Wood[Wood.Saal],Wood[Wood.Teak]],
+            possibleValues: getAllPossibleValuesOfAnEnumType(Wood),
             instrumentTypes: [InstrumentType.Guitar, InstrumentType.Mandolin]
         },
         {
             key: "numStrings",
             type: "enum",
-            possibleValues: [NumStrings[NumStrings.six],NumStrings[NumStrings.eight],NumStrings[NumStrings.twelve]],
+            possibleValues: getAllPossibleValuesOfAnEnumType(NumStrings),
             instrumentTypes: [InstrumentType.Guitar, InstrumentType.Bonjo]
         },
         {
             key: "style",
             type: "enum",
-            possibleValues: [Style[Style.A],Style[Style.F],Style[Style.OpenBack],Style[Style.Resonator]],
+            possibleValues: getAllPossibleValuesOfAnEnumType(Style),
             instrumentTypes: [InstrumentType.Mandolin, InstrumentType.Bonjo]
         }
 
@@ -70,24 +72,30 @@ export enum InstrumentType {
 }
 export enum Builder {
     Gibson,
+    Collings,
+    Martin,
+    Fender,
     Jetson,
-    Hendrix
+    Hendrix,
 }
 
 export enum Type {
     Acoustic,
     Electric
-
 }
 
 export enum Wood {
     Mahogony,
-    Saal,
-    Teak
+    IndianRoseWood,
+    Spruce,
+    Adirondack,
+    Alder,
+    Maple
 }
 export enum Style {
     A,
     F,
+    G,
     Resonator,
     OpenBack
 }
@@ -95,4 +103,17 @@ export enum NumStrings{
     six,
     twelve,
     eight
+}
+
+export type myEnumType = InstrumentType | Builder| Type | Wood | Style | NumStrings;
+
+export function getAllPossibleValuesOfAnEnumType(enumType: Enum): string[]{
+    const keys = Object.keys(enumType);
+    const halfLength = keys.length/2;
+    const possibleValues = keys.slice(-halfLength,undefined);
+    return possibleValues;
+}
+
+export interface Enum{
+    [id: number]: string
 }

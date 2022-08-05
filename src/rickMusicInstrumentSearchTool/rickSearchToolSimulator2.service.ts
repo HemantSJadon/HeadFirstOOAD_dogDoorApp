@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { ConsoleLogger, Injectable } from "@nestjs/common";
 import getAllPropertiesForInstrumentType, { Builder, InstrumentType, PropertyAttributes } from "./instrumentProperties";
 
 @Injectable()
@@ -6,6 +6,8 @@ export class RickSearchToolSimulatorServiceNew{
     simulate(){
         //open an inventory
         const inventory = new Inventory();
+
+        //1. Add Guitar to Inventory
         const guitars : Instrument[] = [];
         
         const guitar_spec1 = new InstrumentSpecifications(InstrumentType.Guitar);
@@ -14,68 +16,147 @@ export class RickSearchToolSimulatorServiceNew{
         // InstrumentType.Guitar,"texasSweetness", Builder.Gibson,Type.Acoustic, Wood.Mahogony, Wood.Teak,6,null
         const guitar_spec3 = new InstrumentSpecifications(InstrumentType.Guitar);
         //"britishSuburbs", Builder.Hendrix,Type.Electric, Wood.Saal, Wood.Mahogony,6,null
+        const guitar_spec4 = new InstrumentSpecifications(InstrumentType.Guitar);
+        const guitar_spec5 = new InstrumentSpecifications(InstrumentType.Guitar);
+        const guitar_spec6 = new InstrumentSpecifications(InstrumentType.Guitar);
         const propertiesForGuitar = getAllPropertiesForInstrumentType(InstrumentType.Guitar);
         for(let [key,value] of propertiesForGuitar){
             // const values = value as PropertyAttributes;
             switch (key) {
                 case "model":
-                    guitar_spec1.properties.set(key,"winterRose");
-                    guitar_spec2.properties.set(key,"texasSweetness");
-                    guitar_spec3.properties.set(key,"britishSuburbs");
+                    guitar_spec1.properties.set(key,"CJ");
+                    guitar_spec2.properties.set(key,"D-18");
+                    guitar_spec3.properties.set(key,"stratocastor");
+                    guitar_spec4.properties.set(key,"stratocastor");
+                    guitar_spec5.properties.set(key,"SG'61 Reissue");
+                    guitar_spec6.properties.set(key,"Les Paul");
                     break;
                 case "builder":
-                    guitar_spec1.properties.set(key,value.possibleValues[0]);
-                    guitar_spec2.properties.set(key,value.possibleValues[1]);
-                    guitar_spec1.properties.set(key,value.possibleValues[2]);
+                    guitar_spec1.properties.set(key,value.possibleValues[1]);
+                    guitar_spec2.properties.set(key,value.possibleValues[2]);
+                    guitar_spec3.properties.set(key,value.possibleValues[3]);
+                    guitar_spec4.properties.set(key,value.possibleValues[3]);
+                    guitar_spec5.properties.set(key,value.possibleValues[0]);
+                    guitar_spec6.properties.set(key,value.possibleValues[0]);
+                    break;
                 case "type":
                     guitar_spec1.properties.set(key,value.possibleValues[0]);
                     guitar_spec2.properties.set(key,value.possibleValues[0]);
-                    guitar_spec1.properties.set(key,value.possibleValues[1]);
+                    guitar_spec3.properties.set(key,value.possibleValues[1]);
+                    guitar_spec4.properties.set(key,value.possibleValues[1]);
+                    guitar_spec5.properties.set(key,value.possibleValues[1]);
+                    guitar_spec6.properties.set(key,value.possibleValues[1]);
+                    break;
                 case "topWood":
-                    guitar_spec1.properties.set(key,value.possibleValues[0]);
-                    guitar_spec2.properties.set(key,value.possibleValues[0]);
-                    guitar_spec1.properties.set(key,value.possibleValues[1]);
+                    guitar_spec1.properties.set(key,value.possibleValues[2]);
+                    guitar_spec2.properties.set(key,value.possibleValues[3]);
+                    guitar_spec3.properties.set(key,value.possibleValues[4]);
+                    guitar_spec4.properties.set(key,value.possibleValues[4]);
+                    guitar_spec5.properties.set(key,value.possibleValues[0]);
+                    guitar_spec6.properties.set(key,value.possibleValues[5]);
+                    break;
                 case "backWood":
                     guitar_spec1.properties.set(key,value.possibleValues[1]);
-                    guitar_spec2.properties.set(key,value.possibleValues[2]);
-                    guitar_spec1.properties.set(key,value.possibleValues[0]);
+                    guitar_spec2.properties.set(key,value.possibleValues[0]);
+                    guitar_spec3.properties.set(key,value.possibleValues[4]);
+                    guitar_spec4.properties.set(key,value.possibleValues[4]);
+                    guitar_spec5.properties.set(key,value.possibleValues[0]);
+                    guitar_spec6.properties.set(key,value.possibleValues[5]);
+                    break;
                 case "numStrings":
                     guitar_spec1.properties.set(key,value.possibleValues[0]);
                     guitar_spec2.properties.set(key,value.possibleValues[0]);
-                    guitar_spec1.properties.set(key,value.possibleValues[0]);
+                    guitar_spec3.properties.set(key,value.possibleValues[0]);
+                    guitar_spec4.properties.set(key,value.possibleValues[0]);
+                    guitar_spec5.properties.set(key,value.possibleValues[0]);
+                    guitar_spec6.properties.set(key,value.possibleValues[0]);
+                    break;
                 default:
                     break;
             }
         }
 
-        guitars.push(new Instrument("36d_gt",15000,guitar_spec2));
-        guitars.push(new Instrument("1a_gt",10000,guitar_spec1));
-        guitars.push(new Instrument("49yx_gt",15000,guitar_spec2));
-        guitars.push(new Instrument("41z_gt",30000,guitar_spec3));
-        guitars.push(new Instrument("8mu_gt",30000,guitar_spec3));
-        guitars.push(new Instrument("34s_gt",30000,guitar_spec3));
-        guitars.push(new Instrument("21xx_gt",10000,guitar_spec1));
+        guitars.push(new Instrument("11277",3999.95,guitar_spec1));
+        guitars.push(new Instrument("122784",5495.95,guitar_spec2));
+        guitars.push(new Instrument("V95693",1499.95,guitar_spec3));
+        guitars.push(new Instrument("V9512",1549.95,guitar_spec4));
+        guitars.push(new Instrument("82765501",1890.95,guitar_spec5));
+        guitars.push(new Instrument("70108276",2295.95,guitar_spec6));
+        guitars.push(new Instrument("21xx_gt",1090.99,guitar_spec1));
+        guitars.push(new Instrument("112U7",3999.95,guitar_spec1));
+        guitars.push(new Instrument("12B284",5495.95,guitar_spec2));
+        guitars.push(new Instrument("49yx_gt",1500.65,guitar_spec3));
+        guitars.push(new Instrument("41z_gt",3099.95,guitar_spec6));
+        guitars.push(new Instrument("8mu_gt",3000,guitar_spec4));
+        guitars.push(new Instrument("34s_gt",2199.95,guitar_spec6));
 
         guitars.forEach((g) => {
             inventory.addInstrument(g);
-        })
+        });
 
+        //2. Add Mondlins
+        const mandolins : Instrument[] = [];
+        const mandolin_spec1 = new InstrumentSpecifications(InstrumentType.Mandolin);
 
-        console.log('here are all the guitars in inventory with their serial nums:');
-        guitars.forEach((g) => {
-            console.log(`serialNum:${g.serialNumber} price:${g.price}`);
-        })
+        const propertiesForMandolin = getAllPropertiesForInstrumentType(InstrumentType.Mandolin);
+        for(let [key,value] of propertiesForMandolin){
+            // const values = value as PropertyAttributes;
+            switch (key) {
+                case "model":
+                    mandolin_spec1.properties.set(key,"F5");
+                    break;
+                case "builder":
+                    mandolin_spec1.properties.set(key,value.possibleValues[0]);
+                    break;
+                case "type":
+                    mandolin_spec1.properties.set(key,value.possibleValues[0]);
+                    break;
+                case "topWood":
+                    mandolin_spec1.properties.set(key,value.possibleValues[5]);
+                    break;
+                case "backWood":
+                    mandolin_spec1.properties.set(key,value.possibleValues[5]);
+                    break;
+                case "style":
+                    mandolin_spec1.properties.set(key,value.possibleValues[2]);
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        mandolins.push(new Instrument("9019920",5495.99,mandolin_spec1));
+        mandolins.forEach((g) => {
+            inventory.addInstrument(g);
+        });
+
+        // console.log('here are all the guitars in inventory with their serial nums:');
+        // guitars.forEach((g) => {
+        //     console.log(`serialNum:${g.serialNumber} price:${g.price}`);
+        // })
 
         //simulate the get
-        const serialNum = '49yx_gt';
-        console.log(`getting the guitar with serial number: ${serialNum}:`);
-        console.log(JSON.stringify(inventory.getInstrument(serialNum)));
+        // const serialNum = 'V9512';
+        // console.log(`getting the guitar with serial number: ${serialNum}:`);
+        // console.log(JSON.stringify(inventory.getInstrument(serialNum)));
+        // console.log('\n');
 
 
         //simulates the search
-        console.log(`search instrument for following specs:
-        ${JSON.stringify(guitar_spec3)}`);
-        inventory.search(guitar_spec3);
+        // const guitarSpecs = [guitar_spec1,guitar_spec2,guitar_spec3,guitar_spec4,guitar_spec5,guitar_spec6];
+        // guitarSpecs.forEach(g => {
+        //     console.log(`search instrument for following specs:
+        //     instrumentType: ${InstrumentType[g.instrumentType]} properties: ${JSON.stringify(g.properties)}`);
+        //     console.log(`found ${inventory.search(g).length} guitars.`);
+        //     console.log("\n");
+        // })
+        const specsToSearch = new InstrumentSpecifications(null);
+        specsToSearch.properties.set('topWood','Maple');
+        // specsToSearch.properties.set('type','Acoustic');
+        console.log(`search for the following specs
+        ${{...specsToSearch.properties}}`);
+        console.log(`found ${inventory.search(specsToSearch).length} instruments.`);
+        
     }
 }
 
@@ -98,7 +179,7 @@ class Inventory{
             return [];
         }
         console.log('here are the matching instruments')
-        instruments.forEach(i => console.log(`serialNum: ${i.serialNumber} price:${i.price}`));
+        instruments.forEach(i => console.log(`instrumentType: ${InstrumentType[ i.specs.instrumentType]} serialNum: ${i.serialNumber} price:${i.price}`));
         return instruments;
     }
 }
@@ -125,7 +206,7 @@ class InstrumentSpecifications{
     private _properties : Map<string, PropertyType>;
     
     constructor(
-        public readonly instrumentType: InstrumentType,
+        public readonly instrumentType: InstrumentType | null,
         // public readonly model : string | null,
         // public readonly builder: Builder | null,
         // public readonly type: Type | null,
@@ -136,7 +217,7 @@ class InstrumentSpecifications{
         properties?: Map<string, PropertyType> | null
         
     ){
-        this._properties = properties === null  ? new Map<string,PropertyType> : properties;
+        this._properties = (properties === null || properties === undefined) ? new Map<string,PropertyType> : properties;
         // this.propertiesForInstrumentTypes.set(InstrumentType.Guitar,["model","builder","type","topWood","backWood","numStrings"]);
         // this.propertiesForInstrumentTypes.set(InstrumentType.Mandolin,["model","builder","type","topWood","backWood","style"]);
         // this.propertiesForInstrumentTypes.set(InstrumentType.Bonjo,["model","builder","type","style","numStrings"]);
